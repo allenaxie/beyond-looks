@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.6",
     "antd": "^4.23.4",
     "html-to-image": "^1.10.8",
     "next": "12.3.1",

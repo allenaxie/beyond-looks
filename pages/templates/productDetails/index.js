@@ -40,6 +40,8 @@ const productDetails = () => {
           </div>
           <Divider />
           <ModelsInfo />
+          <Divider />
+
         </div>
         <div className={classes.buttonContainer}>
           <Button onClick={onButtonClick}>Click me</Button>
@@ -51,7 +53,6 @@ const productDetails = () => {
         </div>
       </Col>
     </Row>
-
   )
 }
 

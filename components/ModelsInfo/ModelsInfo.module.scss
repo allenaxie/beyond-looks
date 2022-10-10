@@ -1,0 +1,30 @@
+.modelContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.modelAvatar {
+    border: 1px solid rgb(51, 151, 246);
+}
+
+.modelName {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.modelDescription, .modelSize {
+    display: inline;
+    margin-top: 1rem;
+    font-size: .55rem;
+}
+
+.modelDescription_labels {
+    color: rgb(129, 129, 129);
+}
+
+.bold {
+    font-weight: bold;
+}
