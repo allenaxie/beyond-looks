@@ -4,11 +4,16 @@ import classes from './productDetails.module.scss';
 import { Divider, Button, Row, Col } from 'antd';
 import { ModelsInfo, ProductItemForm } from '../../../components';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveSection, setProductName } from '../../../slices/formSlice';
+import { 
+  setActiveSection, 
+  selectProductName, 
+} from '../../../slices/formSlice';
 
 const productDetails = () => {
 
   const dispatch = useDispatch();
+
+  const productName = useSelector(selectProductName);
 
   const ref = useRef(null);
 
@@ -41,7 +46,7 @@ const productDetails = () => {
         <div ref={ref} className={classes.contentContainer}>
           <div>
             <div className={`${classes.productName} ${classes.sectionEdit}`} onClick={section => handleEditClick('product-name')}>
-              <span>twist top</span>
+              <span>Twist top</span>
             </div>
             <div className={`${classes.productDescription} ${classes.sectionEdit}`} onClick={section => handleEditClick('product-description')}>
               <p>哈喽， 大家好。我是霸王。是王中之霸，不是王八蛋。如果有兴趣做朋友，请联系我的助手。</p>
@@ -58,7 +63,6 @@ const productDetails = () => {
       </Col>
       <Col xs={{ span: 11 }} className={classes.formContainer}>
         <div style={{ position: 'fixed' }}>
-          <span>Edit form</span>
           <ProductItemForm />
         </div>
       </Col>
