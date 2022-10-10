@@ -14,7 +14,11 @@
     font-size: .8rem;
 }
 
-.productName_title {
+.sectionEdit {
+    cursor: pointer;
+}
+
+.productName {
     color: rgb(255, 116, 139);
     text-transform: uppercase;
     text-align: center;
@@ -26,7 +30,7 @@
     }
 }
 
-.productName_description {
+.productDescription {
     margin-top: 2rem;
 }
 

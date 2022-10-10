@@ -31,7 +31,7 @@ const Navbar = () => {
                 className={classes.logo}
             >
                 <Link href="/">
-                    Pyen
+                    Beyond Looks
                 </Link>
             </div>
             <div className={classes.mainContent}>
