@@ -9,9 +9,10 @@ const productTemplateSchema = new mongoose.Schema({
     },
     models: [
         {
+            name: String,
             height: Number,
             weight: Number,
-            threeSizes: String,
+            threeSizes: [String],
             imageURL: String,
             size: String,
         }

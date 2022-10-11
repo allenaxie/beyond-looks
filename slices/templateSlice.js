@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    activeSection: '',
+    activeTemplate: {},
+    activeSection: "",
     productName: '',
     productDescription: '',
 }
@@ -11,8 +12,8 @@ export const formSlice = createSlice({
     initialState,
     reducers: {
         // Actions
-        setActiveSection: (state,action) => {
-            state.activeSection = action.payload;
+        setActiveTemplate: (state,action) => {
+            state.activeTemplate = action.payload;
         },
         setProductName: (state, action) => {
             state.productName = action.payload;
@@ -24,11 +25,12 @@ export const formSlice = createSlice({
 })
 
 // export actions
-export const {setActiveSection, setProductName, setProductDescription} = formSlice.actions;
+export const {setActiveTemplate, setProductName, setProductDescription} = formSlice.actions;
 
 // export selectors
-export const selectActiveSection = (state) => state.form.activeSection;
+export const selectActiveTemplate = (state) => state.form.activeTemplate;
 export const selectProductName = (state) => state.form.productName;
 export const selectProductDescription = (state) => state.form.productDescription;
+export const selectActiveSection = (state) => state.form.activeSection;
 
 export default formSlice.reducer;

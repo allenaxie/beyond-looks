@@ -5,7 +5,7 @@ import { Form, Input, Button } from 'antd';
 import {
     setActiveSection,
     selectActiveSection,
-} from '../../slices/formSlice';
+} from '../../slices/templateSlice';
 
 
 const ProductItemForm = () => {

@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import formReducer from "../slices/formSlice";
+import formReducer from "../slices/templateSlice";
 
 //Global store
 export const store = configureStore({
