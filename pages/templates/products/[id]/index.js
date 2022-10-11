@@ -63,7 +63,7 @@ const productDetails = ({ template }) => {
             </Col>
             <Col xs={{ span: 11 }} className={classes.formContainer}>
                 <div style={{ position: 'fixed' }}>
-                    <ProductItemForm />
+                    <ProductItemForm template={template}/>
                 </div>
             </Col>
         </Row>

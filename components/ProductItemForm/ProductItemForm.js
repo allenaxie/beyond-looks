@@ -8,9 +8,11 @@ import {
 } from '../../slices/templateSlice';
 
 
-const ProductItemForm = () => {
+const ProductItemForm = ({template}) => {
     const dispatch = useDispatch();
     const section = useSelector(selectActiveSection);
+
+    const { TextArea } = Input;
 
     const onFinish = (values) => {
         if (values.productName) {
@@ -32,8 +34,8 @@ const ProductItemForm = () => {
             onFinishFailed={onFinishFailed}
             autoComplete='off'
             initialValues={{
-                productName: 'name of product',
-                productDescription: 'description'
+                productName: template.name,
+                productDescription: template.description,
             }}
         >
             {section === 'product-name' &&
@@ -49,17 +51,19 @@ const ProductItemForm = () => {
                     label="Product Description:"
                     name="productDescription"
                 >
-                    <Input />
+                    <TextArea rows={8}/>
                 </Form.Item>
             }
             {section !== '' &&
                 <Form.Item
-                    wrapperCol={{
+                className={classes.submitBtnContainer}    
+                wrapperCol={{
                         offset: 8,
                         span: 16,
                     }}
+
                 >
-                    <Button type="primary" htmlType="submit">
+                    <Button className={classes.submitBtn} type="primary" htmlType="submit">
                         Submit
                     </Button>
                 </Form.Item>

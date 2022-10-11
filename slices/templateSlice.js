@@ -15,6 +15,9 @@ export const formSlice = createSlice({
         setActiveTemplate: (state,action) => {
             state.activeTemplate = action.payload;
         },
+        setActiveSection: (state, action) => {
+            state.activeSection = action.payload;
+        },
         setProductName: (state, action) => {
             state.productName = action.payload;
         },
@@ -25,7 +28,7 @@ export const formSlice = createSlice({
 })
 
 // export actions
-export const {setActiveTemplate, setProductName, setProductDescription} = formSlice.actions;
+export const {setActiveTemplate, setActiveSection, setProductName, setProductDescription} = formSlice.actions;
 
 // export selectors
 export const selectActiveTemplate = (state) => state.form.activeTemplate;
