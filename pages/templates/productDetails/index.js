@@ -39,6 +39,7 @@ const productDetails = () => {
     dispatch(setActiveSection(section));
   }
 
+  console.log(data);
   return (
     <Row className={classes.container}>
       <Col xs={{ span: 11 }}>
@@ -71,3 +72,4 @@ const productDetails = () => {
 }
 
 export default productDetails;
+

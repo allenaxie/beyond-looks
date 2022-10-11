@@ -17,7 +17,7 @@ const Navbar = () => {
                 label: (
                     <>
                         <AiOutlineUser /> &nbsp;
-                        <Link href='/templates/productDetails'>Product Details</Link>
+                        <Link href='/templates/products'>Product Details</Link>
                     </>
                 )
             }
