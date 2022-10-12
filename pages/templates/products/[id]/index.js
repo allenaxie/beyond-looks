@@ -90,7 +90,7 @@ export async function getStaticPaths() {
 
     try {
         // get list of templates
-        const res = await axios.get(`http://localhost:3000/api/productTemplates`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/productTemplates`);
         const data = res.data.data;
 
         // create path for each template
