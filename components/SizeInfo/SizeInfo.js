@@ -141,7 +141,7 @@ const SizeInfo = () => {
                     title: '腰围',
                     dataIndex: 'waist',
                     editable: true,
-                }, 
+                },
                 {
                     title: 'operation',
                     dataIndex: 'operation',
@@ -173,7 +173,7 @@ const SizeInfo = () => {
                 title: '腰围',
                 dataIndex: 'waist',
                 editable: true,
-            }, 
+            },
 
         ]
     }
@@ -222,6 +222,9 @@ const SizeInfo = () => {
 
     return (
         <div className={classes.container}>
+            <div className={classes.productName}>
+                <span>SIZE INFO</span>
+            </div>
             {editMode &&
                 <Button
                     onClick={handleAdd}
