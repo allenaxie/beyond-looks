@@ -15,7 +15,7 @@ import {
 } from '../../../../slices/templateSlice';
 import axios from 'axios';
 
-const productDetails = ({ template }) => {
+const ProductDetails = ({ template }) => {
 
     const dispatch = useDispatch();
     const activeTemplate = useSelector(selectActiveTemplate);
@@ -23,7 +23,7 @@ const productDetails = ({ template }) => {
     useEffect(() => {
         // get active template
         dispatch(setActiveTemplate(template));
-    }, [])
+    },[])
 
     const ref = useRef(null);
 
@@ -83,7 +83,7 @@ const productDetails = ({ template }) => {
     )
 }
 
-export default productDetails;
+export default ProductDetails;
 
 export async function getStaticPaths() {
     let paths = [];

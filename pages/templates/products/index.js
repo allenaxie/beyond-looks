@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-const productsList = ({ templates }) => {
+const ProductsList = ({ templates }) => {
     const dispatch = useDispatch();
     const router = useRouter();
 
@@ -84,7 +84,7 @@ const productsList = ({ templates }) => {
     )
 }
 
-export default productsList;
+export default ProductsList;
 
 export async function getStaticProps(context) {
     let templates = [];
