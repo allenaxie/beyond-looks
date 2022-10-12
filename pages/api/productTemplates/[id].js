@@ -7,8 +7,6 @@ export default async function handler(req, res) {
         method
     } = req;
 
-    console.log('query:', id)
-
     dbConnect();
 
     if (method === 'GET') {

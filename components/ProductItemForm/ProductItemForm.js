@@ -1,25 +1,30 @@
 import React from 'react';
 import classes from './ProductItemForm.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { Form, Input, Button } from 'antd';
+import { Row, Col, Form, Input, InputNumber, Button, Select } from 'antd';
 import {
     setActiveSection,
     selectActiveSection,
+    setActiveTemplate,
 } from '../../slices/templateSlice';
+import axios from 'axios';
 
-
-const ProductItemForm = ({template}) => {
+const ProductItemForm = ({ activeTemplate }) => {
     const dispatch = useDispatch();
     const section = useSelector(selectActiveSection);
 
     const { TextArea } = Input;
 
-    const onFinish = (values) => {
-        if (values.productName) {
-            console.log('name');
-        } else if (values.productDescription) {
-            console.log('description');
+    const onFinish = async (values) => {
+        if (section === "models") {
+            values.models = Object.values(values);
+            delete values['[object Object]'];
         }
+        console.log(values);
+        const res = await axios.put(`/api/productTemplates/${activeTemplate._id}`, values);
+        const updatedTemplate = res.data.data;
+        // update state
+        dispatch(setActiveTemplate(updatedTemplate));
     }
 
     const onFinishFailed = (errorInfo) => {
@@ -32,16 +37,29 @@ const ProductItemForm = ({template}) => {
             name='productItem-form'
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
+            labelCol={{
+                span: 10,
+            }}
+            wrapperCol={{
+                span: 14,
+            }}
             autoComplete='off'
             initialValues={{
-                productName: template.name,
-                productDescription: template.description,
+                name: activeTemplate?.name,
+                description: activeTemplate?.description,
+                model: [{
+                    weight: activeTemplate?.weight,
+                    height: activeTemplate?.height,
+                    bust: activeTemplate?.bust,
+                    waist: activeTemplate?.waist,
+                    hips: activeTemplate?.hips,
+                }]
             }}
         >
             {section === 'product-name' &&
                 <Form.Item
                     label="Product Name:"
-                    name="productName"
+                    name='name'
                 >
                     <Input placeholder='Enter product name...' />
                 </Form.Item>
@@ -49,15 +67,65 @@ const ProductItemForm = ({template}) => {
             {section === 'product-description' &&
                 <Form.Item
                     label="Product Description:"
-                    name="productDescription"
+                    name="description"
                 >
-                    <TextArea rows={8}/>
+                    <TextArea rows={8} />
                 </Form.Item>
+            }
+            {section === 'models' &&
+                activeTemplate.models.map((model, index) => (
+                    <div key={index}>
+                        <Form.Item
+                            label={`Model ${index + 1} height`}
+                            name={[model, 'height']}
+                        >
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item
+                            label={`Model ${index + 1} weight`}
+                            name={[model, 'weight']}
+                        >
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item
+                            label={`Bust measurement`}
+                            name={[model, 'bust']}
+                        >
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item
+                            label={`Waist measurement`}
+                            name={[model, 'bust']}
+                        >
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item
+                            label={`Hips measurement`}
+                            name={[model, 'bust']}
+                        >
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item
+                            label={`Model size`}
+                            name={[model, 'size']}
+                        >
+                            <Select
+                                style={{
+                                    width: 120,
+                                }}
+                            >
+                                <Select.Option value="S">S</Select.Option>
+                                <Select.Option value="M">M</Select.Option>
+                                <Select.Option value="L">L</Select.Option>
+                            </Select>
+                        </Form.Item>
+                    </div>
+                ))
             }
             {section !== '' &&
                 <Form.Item
-                className={classes.submitBtnContainer}    
-                wrapperCol={{
+                    className={classes.submitBtnContainer}
+                    wrapperCol={{
                         offset: 8,
                         span: 16,
                     }}

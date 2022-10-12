@@ -1,18 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+    templatesList: [],
     activeTemplate: {},
     activeSection: "",
     productName: '',
     productDescription: '',
 }
 
-export const formSlice = createSlice({
-    name:'form',
+export const templateSlice = createSlice({
+    name:'template',
     initialState,
     reducers: {
         // Actions
-        setActiveTemplate: (state,action) => {
+        setTemplatesList: (state, action) => {
+            state.templatesList = action.payload;
+        },
+        setActiveTemplate: (state, action) => {
             state.activeTemplate = action.payload;
         },
         setActiveSection: (state, action) => {
@@ -21,19 +25,26 @@ export const formSlice = createSlice({
         setProductName: (state, action) => {
             state.productName = action.payload;
         },
-        setProductDescription: (state,action) => {
+        setProductDescription: (state, action) => {
             state.productDescription = action.payload;
         }
     }
 })
 
 // export actions
-export const {setActiveTemplate, setActiveSection, setProductName, setProductDescription} = formSlice.actions;
+export const {
+    setActiveTemplate, 
+    setTemplatesList,
+    setActiveSection, 
+    setProductName, 
+    setProductDescription,
+} = templateSlice.actions;
 
 // export selectors
-export const selectActiveTemplate = (state) => state.form.activeTemplate;
-export const selectProductName = (state) => state.form.productName;
-export const selectProductDescription = (state) => state.form.productDescription;
-export const selectActiveSection = (state) => state.form.activeSection;
+export const selectActiveTemplate = (state) => state.template.activeTemplate;
+export const selectTemplatesList = (state) => state.template.templatesList;
+export const selectProductName = (state) => state.template.productName;
+export const selectProductDescription = (state) => state.template.productDescription;
+export const selectActiveSection = (state) => state.template.activeSection;
 
-export default formSlice.reducer;
+export default templateSlice.reducer;

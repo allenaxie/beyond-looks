@@ -1,16 +1,28 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import axios from 'axios';
 import classes from './products.module.scss';
 import { List, Avatar, Space } from 'antd';
 import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
-import { setActiveTemplate } from '../../../slices/templateSlice';
-import { useDispatch } from 'react-redux';
+import { 
+    setActiveTemplate, 
+    selectTemplatesList, 
+    setTemplatesList 
+} from '../../../slices/templateSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 const productsList = ({ templates }) => {
     const dispatch = useDispatch();
     const router = useRouter();
+
+    useEffect(() => {
+        // get templates
+        dispatch(setTemplatesList(templates));
+    }, [])
+    
+    const templatesList = useSelector(selectTemplatesList);
+
 
     const handleItemClick = async (item) => {
         dispatch(setActiveTemplate(item));
@@ -35,7 +47,7 @@ const productsList = ({ templates }) => {
                     },
                     pageSize: 5,
                 }}
-                dataSource={templates}
+                dataSource={templatesList}
                 footer={
                     <div>
                         <b>ant design</b> footer part
@@ -80,7 +92,6 @@ export async function getStaticProps(context) {
     try {
         const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/productTemplates`);
         templates = res.data.data;
-
     } catch (err) {
         console.log(err);
     }

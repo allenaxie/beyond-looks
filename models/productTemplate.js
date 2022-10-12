@@ -12,7 +12,9 @@ const productTemplateSchema = new mongoose.Schema({
             name: String,
             height: Number,
             weight: Number,
-            threeSizes: [String],
+            bust: Number,
+            waist: Number,
+            hips: Number,
             imageURL: String,
             size: String,
         }
