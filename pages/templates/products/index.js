@@ -48,11 +48,6 @@ const ProductsList = ({ templates }) => {
                     pageSize: 5,
                 }}
                 dataSource={templatesList}
-                footer={
-                    <div>
-                        <b>ant design</b> footer part
-                    </div>
-                }
                 renderItem={(item) => (
                     <List.Item
                         key={item.name}
