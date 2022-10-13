@@ -2,7 +2,7 @@ import React, { useRef, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { toJpeg } from 'html-to-image';
 import classes from './productDetails.module.scss';
-import { Divider, Button, Row, Col, Skeleton } from 'antd';
+import { Divider, Button, Row, Col, Spin } from 'antd';
 import {
     ModelsInfo,
     ProductItemForm,
@@ -17,7 +17,6 @@ import {
 import axios from 'axios';
 
 const ProductDetails = ({ template }) => {
-
     const dispatch = useDispatch();
     const activeTemplate = useSelector(selectActiveTemplate);
 

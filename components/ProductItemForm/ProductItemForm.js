@@ -57,6 +57,7 @@ const ProductItemForm = ({ activeTemplate }) => {
             }
             // if no image to upload
             else {
+                setIsLoading(true);
                 // if there's already an existing image, add to values
                 if (activeTemplate?.models[0]?.imageURL) {
                     values.models[0].imageURL = activeTemplate?.models[0]?.imageURL;
@@ -66,12 +67,15 @@ const ProductItemForm = ({ activeTemplate }) => {
                 const updatedTemplate = res.data.data;
                 // update state
                 dispatch(setActiveTemplate(updatedTemplate));
+                setIsLoading(false);
             }
         } else {
+            setIsLoading(true);
             const res = await axios.put(`/api/productTemplates/${activeTemplate._id}`, values);
             const updatedTemplate = res.data.data;
             // update state
             dispatch(setActiveTemplate(updatedTemplate));
+            setIsLoading(false);
         }
     }
 
