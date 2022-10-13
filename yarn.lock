@@ -336,6 +336,11 @@
     "rc-util" "^5.22.5"
     "scroll-into-view-if-needed" "^2.2.25"
 
+"any-base@^1.1.0":
+  "integrity" "sha512-uMgjozySS8adZZYePpaWs8cxB9/kdzmpX6SgJZ+wbz1K5eYk5QMYDVJaZKhxyIHUdnnJkfR7SVgStgH7LkGUyg=="
+  "resolved" "https://registry.npmjs.org/any-base/-/any-base-1.1.0.tgz"
+  "version" "1.1.0"
+
 "anymatch@~3.1.2":
   "integrity" "sha512-P43ePfOAIupkguHUycrc4qJ9kz8ZiuOUijaETwX7THt0Y/GNK7v0aa8rY816xWjZ7rJdA5XdMcpVFTKMq+RvWg=="
   "resolved" "https://registry.npmjs.org/anymatch/-/anymatch-3.1.2.tgz"
@@ -606,6 +611,11 @@
     "path-key" "^3.1.0"
     "shebang-command" "^2.0.0"
     "which" "^2.0.1"
+
+"crypto-js@^3.1.9-1":
+  "integrity" "sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q=="
+  "resolved" "https://registry.npmjs.org/crypto-js/-/crypto-js-3.3.0.tgz"
+  "version" "3.3.0"
 
 "css-line-break@^2.1.0":
   "integrity" "sha512-FHcKFCZcAha3LwfVBhCQbW2nCNbkZXn7KVUJcsT5/P8YmfsVja0FMPJr0B903j/E69HUphKiV9iQArX8SDYA4w=="
@@ -2245,6 +2255,14 @@
     "rc-resize-observer" "^1.0.0"
     "rc-util" "^5.15.0"
 
+"react-aws-s3@^1.5.0":
+  "integrity" "sha512-ib8JvNFlWaQyFfXvDXNeQCsGsHAHJswQgtA1MbpIU5sCSXZVeqoRVlvexyzjPjJGy8KDnbyYEB9PQ2Rw96g8Ug=="
+  "resolved" "https://registry.npmjs.org/react-aws-s3/-/react-aws-s3-1.5.0.tgz"
+  "version" "1.5.0"
+  dependencies:
+    "crypto-js" "^3.1.9-1"
+    "short-uuid" "^3.1.0"
+
 "react-component-export-image@^1.0.6":
   "integrity" "sha512-LQHVt6HPHyyu96J57D5tSsYD1E5Hpky6X4HKbnCgepIK/aAnyQslNmpvKBAYPehCb6baGF4bWl7Ug15nGb2bpw=="
   "resolved" "https://registry.npmjs.org/react-component-export-image/-/react-component-export-image-1.0.6.tgz"
@@ -2457,6 +2475,14 @@
   "integrity" "sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A=="
   "resolved" "https://registry.npmjs.org/shebang-regex/-/shebang-regex-3.0.0.tgz"
   "version" "3.0.0"
+
+"short-uuid@^3.1.0":
+  "integrity" "sha512-7dI69xtJYpTIbg44R6JSgrbDtZFuZ9vAwwmnF/L0PinykbFrhQ7V8omKsQcVw1TP0nYJ7uQp1PN6/aVMkzQFGQ=="
+  "resolved" "https://registry.npmjs.org/short-uuid/-/short-uuid-3.1.1.tgz"
+  "version" "3.1.1"
+  dependencies:
+    "any-base" "^1.1.0"
+    "uuid" "^3.3.2"
 
 "side-channel@^1.0.4":
   "integrity" "sha512-q5XPytqFEIKHkGdiMIrY10mvLRvnQh42/+GoBlFW3b2LXLE2xxJpZFdm94we0BaoV3RwJyGqg5wS7epxTv0Zvw=="
@@ -2686,6 +2712,11 @@
   "version" "1.0.2"
   dependencies:
     "base64-arraybuffer" "^1.0.2"
+
+"uuid@^3.3.2":
+  "integrity" "sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A=="
+  "resolved" "https://registry.npmjs.org/uuid/-/uuid-3.4.0.tgz"
+  "version" "3.4.0"
 
 "webidl-conversions@^7.0.0":
   "integrity" "sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g=="

@@ -3,23 +3,32 @@
 }
 
 .editableCellValueWrap {
-padding: 5px 12px;
-cursor: pointer;
+    padding: 5px 12px;
+    cursor: pointer;
 }
 
 .editableRow:hover .editableCellValueWrap {
-padding: 4px 11px;
-border: 1px solid #d9d9d9;
-border-radius: 2px;
+    padding: 4px 11px;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
 }
 
 [data-theme='dark'] .editableRow:hover .editableCellValueWrap {
-border: 1px solid #434343;
+    border: 1px solid #434343;
 }
 
 .tableContainer {
     cursor: pointer;
     margin-top: 2rem;
+
+    & th {
+        font-size: .6rem;
+    }
+
+    & td {
+        font-size: .6rem;
+        white-space: nowrap;
+    }
 }
 
 .productName {
@@ -27,7 +36,7 @@ border: 1px solid #434343;
     text-transform: uppercase;
     text-align: center;
 
-    & > span {
+    &>span {
         padding: 5px;
         border-bottom: 1px solid rgb(0, 0, 0);
     }

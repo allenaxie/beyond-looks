@@ -1,5 +1,5 @@
-import dbConnect from '../../../utilities/dbConnect';
-import ProductTemplate from '../../../models/productTemplate';
+import dbConnect from '../../../../utilities/dbConnect';
+import ProductTemplate from '../../../../models/productTemplate';
 
 export default async function handler(req, res) {
     const {

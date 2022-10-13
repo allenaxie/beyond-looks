@@ -1,12 +1,13 @@
 import React, { useRef, useCallback, useEffect } from 'react';
+import Image from 'next/image';
 import { toJpeg } from 'html-to-image';
 import classes from './productDetails.module.scss';
-import { Divider, Button, Row, Col } from 'antd';
-import { 
-    ModelsInfo, 
+import { Divider, Button, Row, Col, Skeleton } from 'antd';
+import {
+    ModelsInfo,
     ProductItemForm,
     SizeInfo,
- } from '../../../../components';
+} from '../../../../components';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     setActiveSection,
@@ -23,7 +24,7 @@ const ProductDetails = ({ template }) => {
     useEffect(() => {
         // get active template
         dispatch(setActiveTemplate(template));
-    },[])
+    }, [])
 
     const ref = useRef(null);
 
@@ -64,11 +65,24 @@ const ProductDetails = ({ template }) => {
                     <Divider />
                     {activeTemplate?.models?.length > 0 && (
                         <>
-                            <ModelsInfo activeTemplate={activeTemplate} handleEditClick={handleEditClick}/>
+                            <ModelsInfo activeTemplate={activeTemplate} handleEditClick={handleEditClick} />
                             <Divider />
                         </>
                     )}
-                    <SizeInfo/>
+                    <SizeInfo />
+                    <Divider />
+                    <div>
+                        <Row gutter={[16, 16]}>
+                            <Col xs={{ span: 12 }} className={classes.frontBackImages}>
+                                {<Image src={activeTemplate?.frontViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={150} height={200} /> }
+                                <span>正面</span>
+                            </Col>
+                            <Col xs={{ span: 12 }} className={classes.frontBackImages}>
+                                {<Image src={activeTemplate?.backViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={150} height={200} /> }
+                                <span>背面</span>
+                            </Col>
+                        </Row>
+                    </div>
                 </div>
                 <div className={classes.buttonContainer}>
                     <Button onClick={exportJPEG}>Export as JPEG</Button>
