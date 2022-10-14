@@ -1,12 +1,13 @@
 import React, { useRef, useCallback, useEffect } from 'react';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { toJpeg } from 'html-to-image';
 import classes from './productDetails.module.scss';
-import { Divider, Button, Row, Col, Spin } from 'antd';
+import { Divider, Button, Row, Col, Spin, Image } from 'antd';
 import {
     ModelsInfo,
     ProductItemForm,
     SizeInfo,
+    DetailLook,
 } from '../../../../components';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -61,27 +62,29 @@ const ProductDetails = ({ template }) => {
                             <p>{activeTemplate?.description}</p>
                         </div>
                     </div>
-                    <Divider />
+                    <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
                     {activeTemplate?.models?.length > 0 && (
                         <>
                             <ModelsInfo activeTemplate={activeTemplate} handleEditClick={handleEditClick} />
-                            <Divider />
+                            <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
                         </>
                     )}
                     <SizeInfo />
-                    <Divider />
+                    <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
                     <div>
                         <Row className={classes.sectionEdit} gutter={[16, 16]} onClick={() => handleEditClick('images-frontBack')} >
                             <Col xs={{ span: 12 }} className={classes.frontBackImages}>
-                                {<Image src={activeTemplate?.frontViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={150} height={200} /> }
+                                {<Image src={activeTemplate?.frontViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
                                 <span>正面</span>
                             </Col>
                             <Col xs={{ span: 12 }} className={classes.frontBackImages}>
-                                {<Image src={activeTemplate?.backViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={150} height={200} /> }
+                                {<Image src={activeTemplate?.backViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
                                 <span>背面</span>
                             </Col>
                         </Row>
                     </div>
+                    <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
+                    <DetailLook />
                 </div>
                 <div className={classes.buttonContainer}>
                     <Button onClick={exportJPEG}>Export as JPEG</Button>

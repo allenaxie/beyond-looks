@@ -1,0 +1,28 @@
+@import "styles/variables";
+
+$light-grey-1: rgba(113, 113, 113, 0.842);
+
+.title {
+    color: $blueColor-1;
+    text-align: center;
+
+    & span {
+        border-bottom: 1px solid $blueColor-1;
+    }
+}
+
+.body {
+    margin-top: 2rem;
+
+    & img {
+        border: 1px solid $blueColor-1;
+    }
+}
+
+.detailDescription {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    color: $light-grey-1;
+}
