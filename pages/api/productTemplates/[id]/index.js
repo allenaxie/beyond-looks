@@ -19,6 +19,7 @@ export default async function handler(req, res) {
         }
     } else if (method === 'PUT') {
         try {
+            console.log('req body:', req.body);
             // find and update the meeting topic
             const productTemplate = await ProductTemplate.findByIdAndUpdate(id, req.body, {
                 new: true,

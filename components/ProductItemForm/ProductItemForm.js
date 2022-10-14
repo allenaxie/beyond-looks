@@ -12,7 +12,8 @@ import S3 from 'react-aws-s3';
 const ProductItemForm = ({ activeTemplate }) => {
     const dispatch = useDispatch();
     const section = useSelector(selectActiveSection);
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedModelImage, setSelectedModelImage] = useState(null);
+    const [selectedImages, setSelectedImages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     const config = {
@@ -28,19 +29,19 @@ const ProductItemForm = ({ activeTemplate }) => {
     const { TextArea } = Input;
 
     const onFinish = async (values) => {
-        // if model form
+        // if update model info
         if (section === "models") {
             // manipulate models data into object
             values.models = Object.values(values);
             delete values['[object Object]'];
             // if there's an uploaded image
-            if (selectedFile) {
+            if (selectedModelImage) {
                 try {
                     setIsLoading(true);
                     const ReactS3Client = new S3(config);
                     // the name of the file uploaded is used to upload it to S3
                     ReactS3Client
-                        .uploadFile(selectedFile, selectedFile.name)
+                        .uploadFile(selectedModelImage, selectedModelImage.name)
                         .then(async (data) => {
                             values.models[0].imageURL = data.location;
                             // update model info in db
@@ -58,7 +59,7 @@ const ProductItemForm = ({ activeTemplate }) => {
             // if no image to upload
             else {
                 setIsLoading(true);
-                // if there's already an existing image, add to values
+                // if there's already an existing image, add to values object
                 if (activeTemplate?.models[0]?.imageURL) {
                     values.models[0].imageURL = activeTemplate?.models[0]?.imageURL;
                 }
@@ -69,7 +70,37 @@ const ProductItemForm = ({ activeTemplate }) => {
                 dispatch(setActiveTemplate(updatedTemplate));
                 setIsLoading(false);
             }
-        } else {
+        } 
+        // front/back view section
+        else if (section === 'images-frontBack') {
+            if (selectedImages.length > 0) {
+                try {
+                    setIsLoading(true);
+                    const ReactS3Client = new S3(config);
+
+                    // upload files to S3
+                    const [frontImage, backImage] = await Promise.all([
+                        ReactS3Client.uploadFile(selectedImages[0], selectedImages[0].name),
+                        ReactS3Client.uploadFile(selectedImages[1], selectedImages[1].name),
+                    ])
+
+                    // set image URLs to values object
+                    values.frontViewImageURL = frontImage.location;
+                    values.backViewImageURL = backImage.location;
+
+                    // add to MongoDB
+                    const res = await axios.put(`/api/productTemplates/${activeTemplate._id}`, values );
+                    const updatedTemplate = res.data.data;
+                    setIsLoading(false);
+                    // update state
+                    dispatch(setActiveTemplate(updatedTemplate));
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        }
+        // no image sections
+        else {
             setIsLoading(true);
             const res = await axios.put(`/api/productTemplates/${activeTemplate._id}`, values);
             const updatedTemplate = res.data.data;
@@ -84,8 +115,14 @@ const ProductItemForm = ({ activeTemplate }) => {
     }
 
     const handleFileInput = (e) => {
-        setSelectedFile(e.target.files[0]);
+        setSelectedModelImage(e.target.files[0]);
     }
+    
+    const handleFilesInput = (e) => {
+        setSelectedImages([...selectedImages, e.target.files[0]]);
+    }
+
+    console.log('files:', selectedImages);
 
     return (
         <Spin spinning={isLoading}>
@@ -249,6 +286,28 @@ const ProductItemForm = ({ activeTemplate }) => {
                             </Form.Item>
                         </div>
                     ))
+                }
+                {section === 'images-frontBack' &&
+                    (
+                        <>
+                            <Form.Item
+                                label={<span className={classes.formLabel}>Front view: </span>}
+                                name="frontViewImageURL"
+                            >
+                                <div>
+                                    <input type="file" onChange={handleFilesInput} />
+                                </div>
+                            </Form.Item>
+                            <Form.Item
+                                label={<span className={classes.formLabel}>Back view: </span>}
+                                name="backViewImageURL"
+                            >
+                                <div>
+                                    <input type="file" onChange={handleFilesInput} />
+                                </div>
+                            </Form.Item>
+                        </>
+                    )
                 }
                 {section !== '' &&
                     <Form.Item

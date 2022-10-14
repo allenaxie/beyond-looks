@@ -54,10 +54,10 @@ const ProductDetails = ({ template }) => {
                 {/* DOM nodes you want to convert to JPEG */}
                 <div ref={ref} className={classes.contentContainer}>
                     <div>
-                        <div className={`${classes.productName} ${classes.sectionEdit}`} onClick={section => handleEditClick('product-name')}>
+                        <div className={`${classes.productName} ${classes.sectionEdit}`} onClick={() => handleEditClick('product-name')}>
                             <span>{activeTemplate?.name}</span>
                         </div>
-                        <div className={`${classes.productDescription} ${classes.sectionEdit}`} onClick={section => handleEditClick('product-description')}>
+                        <div className={`${classes.productDescription} ${classes.sectionEdit}`} onClick={() => handleEditClick('product-description')}>
                             <p>{activeTemplate?.description}</p>
                         </div>
                     </div>
@@ -71,7 +71,7 @@ const ProductDetails = ({ template }) => {
                     <SizeInfo />
                     <Divider />
                     <div>
-                        <Row gutter={[16, 16]}>
+                        <Row className={classes.sectionEdit} gutter={[16, 16]} onClick={() => handleEditClick('images-frontBack')} >
                             <Col xs={{ span: 12 }} className={classes.frontBackImages}>
                                 {<Image src={activeTemplate?.frontViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={150} height={200} /> }
                                 <span>正面</span>
