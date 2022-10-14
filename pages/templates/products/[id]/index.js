@@ -85,6 +85,22 @@ const ProductDetails = ({ template }) => {
                     </div>
                     <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
                     <DetailLook />
+                    <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
+                    <Row gutter={[32,32]}>
+                        <Col xs={{ span: 22, offset: 2 }}>
+                            {<Image src={activeTemplate?.backViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
+                        </Col>
+                        <Col xs={{ span: 22, offset: 2 }}>
+                            {<Image src={activeTemplate?.backViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
+                        </Col>
+                        <Col xs={{ span: 22, offset: 2 }}>
+                            {<Image src={activeTemplate?.backViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
+                        </Col>
+                        <Col xs={{ span: 22, offset: 2 }}>
+                            {<Image src={activeTemplate?.backViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
+                        </Col>
+
+                    </Row>
                 </div>
                 <div className={classes.buttonContainer}>
                     <Button onClick={exportJPEG}>Export as JPEG</Button>
