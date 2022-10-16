@@ -199,7 +199,7 @@ const ProductItemForm = ({ activeTemplate }) => {
                     //     hips: activeTemplate?.hips,
                     // }],
                     // detailLook: [{
-                    //     description1: 'hey test'
+                    //     description: 'test'
                     // }]
                 }}
             >
@@ -380,9 +380,10 @@ const ProductItemForm = ({ activeTemplate }) => {
                             <Form.Item
                                 label={<span className={classes.formLabel}>Description {index + 1} </span>}
                                 name={[`detail${index}`, `description`]}
+                                initialValue={activeTemplate?.detailLook[index]?.description}
                             >
                                 <Input 
-                                defaultValue={detail?.description}
+                                // defaultValue={detail?.description}
                                     placeholder="Enter product description..." />
                             </Form.Item>
                         </div>
