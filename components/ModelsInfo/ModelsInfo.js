@@ -16,7 +16,7 @@ const ModelsInfo = ({ activeTemplate, handleEditClick }) => {
                  onClick={() => handleEditClick('models')}
                  >
                     <div>
-                        <Avatar className={classes.modelAvatar} size={80} src={model?.imageURL || '/images/profile.jpg'} />
+                        <Avatar className={classes.modelAvatar} size={80} src={model?.imageUrl || '/images/profile.jpg'} />
                     </div>
                     <span className={classes.modelName}>{model?.name}</span>
                     <div >

@@ -33,7 +33,7 @@ const productTemplateSchema = new mongoose.Schema({
                 type: Number,
                 required: true,
             },
-            imageURL: {
+            imageUrl: {
                 type: String,
             },
             size: {
@@ -42,9 +42,14 @@ const productTemplateSchema = new mongoose.Schema({
             },
         }
     ],
-    frontViewImageURL: String,
-    backViewImageURL: String,
-    detailedViewImages: []
+    frontViewImageUrl: String,
+    backViewImageUrl: String,
+    detailLook: [
+        {
+            imageUrl: String,
+            description: String,
+        }
+    ]
 }, {
     timestamps: true,
 })

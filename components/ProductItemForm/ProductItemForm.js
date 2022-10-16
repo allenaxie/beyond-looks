@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classes from './ProductItemForm.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { Form, Input, InputNumber, Button, Select, Spin } from 'antd';
+import { Form, Input, InputNumber, Button, Select, Spin, Space } from 'antd';
 import {
     selectActiveSection,
     setActiveTemplate,
@@ -43,7 +43,7 @@ const ProductItemForm = ({ activeTemplate }) => {
                     ReactS3Client
                         .uploadFile(selectedModelImage, selectedModelImage.name)
                         .then(async (data) => {
-                            values.models[0].imageURL = data.location;
+                            values.models[0].imageUrl = data.location;
                             // update model info in db
                             const res = await axios.put(`/api/productTemplates/${activeTemplate._id}`, values);
                             const updatedTemplate = res.data.data;
@@ -60,8 +60,8 @@ const ProductItemForm = ({ activeTemplate }) => {
             else {
                 setIsLoading(true);
                 // if there's already an existing image, add to values object
-                if (activeTemplate?.models[0]?.imageURL) {
-                    values.models[0].imageURL = activeTemplate?.models[0]?.imageURL;
+                if (activeTemplate?.models[0]?.imageUrl) {
+                    values.models[0].imageUrl = activeTemplate?.models[0]?.imageUrl;
                 }
                 // update model info in db
                 const res = await axios.put(`/api/productTemplates/${activeTemplate._id}`, values);
@@ -70,7 +70,7 @@ const ProductItemForm = ({ activeTemplate }) => {
                 dispatch(setActiveTemplate(updatedTemplate));
                 setIsLoading(false);
             }
-        } 
+        }
         // front/back view section
         else if (section === 'images-frontBack') {
             if (selectedImages.length > 0) {
@@ -84,12 +84,12 @@ const ProductItemForm = ({ activeTemplate }) => {
                         ReactS3Client.uploadFile(selectedImages[1], selectedImages[1].name),
                     ])
 
-                    // set image URLs to values object
-                    values.frontViewImageURL = frontImage.location;
-                    values.backViewImageURL = backImage.location;
+                    // set image Urls to values object
+                    values.frontViewImageUrl = frontImage.location;
+                    values.backViewImageUrl = backImage.location;
 
                     // add to MongoDB
-                    const res = await axios.put(`/api/productTemplates/${activeTemplate._id}`, values );
+                    const res = await axios.put(`/api/productTemplates/${activeTemplate._id}`, values);
                     const updatedTemplate = res.data.data;
                     setIsLoading(false);
                     // update state
@@ -99,7 +99,58 @@ const ProductItemForm = ({ activeTemplate }) => {
                 }
             }
         }
-        // no image sections
+        // detail look
+        else if (section === 'detail-look') {
+            try {
+                setIsLoading(true);
+
+                if (selectedImages.length > 0) {
+
+                    const ReactS3Client = new S3(config);
+    
+                    console.log('selected images:', selectedImages)
+                    // upload files to S3
+                    const [imageUrl1, imageUrl2] = await Promise.all([
+                        ReactS3Client.uploadFile(selectedImages[0], selectedImages[0].name),
+                        ReactS3Client.uploadFile(selectedImages[1], selectedImages[1].name),
+                    ])
+    
+                    console.log(imageUrl1, imageUrl2)
+                    console.log('values:', values)
+                    // manipulate models data into object
+                    values.detailLook = Object.values(values);
+                    delete values.detail0;
+                    delete values.detail1;
+    
+                    // // set image Urls to values object
+                    values.detailLook[0].imageUrl = imageUrl1.location;
+                    values.detailLook[1].imageUrl = imageUrl2.location;
+    
+                    console.log('values sent:', values);
+                    // add to MongoDB
+                    const res = await axios.put(`/api/productTemplates/${activeTemplate._id}`, values);
+                    const updatedTemplate = res.data.data;
+                    setIsLoading(false);
+                    // update state
+                    dispatch(setActiveTemplate(updatedTemplate));
+                    // reset uploaded images
+                    setSelectedImages([]);
+                } else {
+                    values.detailLook = Object.values(values);
+                    console.log(values)
+                    const res = await axios.put(`/api/productTemplates/${activeTemplate._id}`, values);
+                    const updatedTemplate = res.data.data;
+                    setIsLoading(false);
+                    // update state
+                    dispatch(setActiveTemplate(updatedTemplate));
+
+                }
+
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        // sections with no images
         else {
             setIsLoading(true);
             const res = await axios.put(`/api/productTemplates/${activeTemplate._id}`, values);
@@ -117,12 +168,10 @@ const ProductItemForm = ({ activeTemplate }) => {
     const handleFileInput = (e) => {
         setSelectedModelImage(e.target.files[0]);
     }
-    
+
     const handleFilesInput = (e) => {
         setSelectedImages([...selectedImages, e.target.files[0]]);
     }
-
-    console.log('files:', selectedImages);
 
     return (
         <Spin spinning={isLoading}>
@@ -141,16 +190,20 @@ const ProductItemForm = ({ activeTemplate }) => {
                 initialValues={{
                     name: activeTemplate?.name,
                     description: activeTemplate?.description,
-                    model: [{
-                        name: activeTemplate?.name,
-                        weight: activeTemplate?.weight,
-                        height: activeTemplate?.height,
-                        bust: activeTemplate?.bust,
-                        waist: activeTemplate?.waist,
-                        hips: activeTemplate?.hips,
-                    }]
+                    // model: [{
+                    //     name: activeTemplate?.models?.name,
+                    //     weight: activeTemplate?.weight,
+                    //     height: activeTemplate?.height,
+                    //     bust: activeTemplate?.bust,
+                    //     waist: activeTemplate?.waist,
+                    //     hips: activeTemplate?.hips,
+                    // }],
+                    // detailLook: [{
+                    //     description1: 'hey test'
+                    // }]
                 }}
             >
+                {/* Product name */}
                 {section === 'product-name' &&
                     <Form.Item
                         label="Product Name:"
@@ -160,6 +213,7 @@ const ProductItemForm = ({ activeTemplate }) => {
                         <Input placeholder='Enter product name...' />
                     </Form.Item>
                 }
+                {/* Product description */}
                 {section === 'product-description' &&
                     <Form.Item
                         label="Product Description:"
@@ -169,12 +223,13 @@ const ProductItemForm = ({ activeTemplate }) => {
                         <TextArea rows={8} />
                     </Form.Item>
                 }
+                {/* Models info */}
                 {section === 'models' &&
-                    activeTemplate.models.map((model, index) => (
+                    activeTemplate?.models?.map((model, index) => (
                         <div key={index}>
                             <Form.Item
                                 label={<span className={classes.formLabel}>Model profile picture</span>}
-                                name={[model, "imageURL"]}
+                                name={[model, "imageUrl"]}
                             >
                                 <div>
                                     <input type="file" onChange={handleFileInput} />
@@ -287,12 +342,13 @@ const ProductItemForm = ({ activeTemplate }) => {
                         </div>
                     ))
                 }
+                {/* Front/Back view images */}
                 {section === 'images-frontBack' &&
                     (
                         <>
                             <Form.Item
                                 label={<span className={classes.formLabel}>Front view: </span>}
-                                name="frontViewImageURL"
+                                name="frontViewImageUrl"
                             >
                                 <div>
                                     <input type="file" onChange={handleFilesInput} />
@@ -300,7 +356,7 @@ const ProductItemForm = ({ activeTemplate }) => {
                             </Form.Item>
                             <Form.Item
                                 label={<span className={classes.formLabel}>Back view: </span>}
-                                name="backViewImageURL"
+                                name="backViewImageUrl"
                             >
                                 <div>
                                     <input type="file" onChange={handleFilesInput} />
@@ -309,6 +365,30 @@ const ProductItemForm = ({ activeTemplate }) => {
                         </>
                     )
                 }
+                {/* Detail Look */}
+                {section === 'detail-look' &&
+                    activeTemplate?.detailLook?.map((detail, index) => (
+                        <div key={index}>
+                            <Form.Item
+                                label={<span className={classes.formLabel}>Image {index + 1} </span>}
+                                name={[`detail${index}`, `imageUrl`]}
+                            >
+                                <div>
+                                    <input type="file" onChange={handleFilesInput} />
+                                </div>
+                            </Form.Item>
+                            <Form.Item
+                                label={<span className={classes.formLabel}>Description {index + 1} </span>}
+                                name={[`detail${index}`, `description`]}
+                            >
+                                <Input 
+                                defaultValue={detail?.description}
+                                    placeholder="Enter product description..." />
+                            </Form.Item>
+                        </div>
+                    ))
+                }
+                {/* Save button */}
                 {section !== '' &&
                     <Form.Item
                         className={classes.submitBtnContainer}

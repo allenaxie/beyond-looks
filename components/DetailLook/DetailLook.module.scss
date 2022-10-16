@@ -2,6 +2,10 @@
 
 $light-grey-1: rgba(113, 113, 113, 0.842);
 
+.container {
+    cursor: pointer;
+}
+
 .title {
     color: $blueColor-1;
     text-align: center;

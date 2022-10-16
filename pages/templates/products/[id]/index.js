@@ -74,30 +74,31 @@ const ProductDetails = ({ template }) => {
                     <div>
                         <Row className={classes.sectionEdit} gutter={[16, 16]} onClick={() => handleEditClick('images-frontBack')} >
                             <Col xs={{ span: 12 }} className={classes.frontBackImages}>
-                                {<Image src={activeTemplate?.frontViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
+                                {<Image src={activeTemplate?.frontViewImageUrl || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
                                 <span>正面</span>
                             </Col>
                             <Col xs={{ span: 12 }} className={classes.frontBackImages}>
-                                {<Image src={activeTemplate?.backViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
+                                {<Image src={activeTemplate?.backViewImageUrl || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
                                 <span>背面</span>
                             </Col>
                         </Row>
                     </div>
                     <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
-                    <DetailLook />
+                    <DetailLook handleEditClick={handleEditClick} />
                     <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
-                    <Row gutter={[32,32]}>
+                    {/* image gallery */}
+                    <Row gutter={[32,32]} onClick={() => handleEditClick('images-gallery')}>
                         <Col xs={{ span: 22, offset: 2 }}>
-                            {<Image src={activeTemplate?.backViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
+                            {<Image src={activeTemplate?.backViewImageUrl || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
                         </Col>
                         <Col xs={{ span: 22, offset: 2 }}>
-                            {<Image src={activeTemplate?.backViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
+                            {<Image src={activeTemplate?.backViewImageUrl || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
                         </Col>
                         <Col xs={{ span: 22, offset: 2 }}>
-                            {<Image src={activeTemplate?.backViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
+                            {<Image src={activeTemplate?.backViewImageUrl || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
                         </Col>
                         <Col xs={{ span: 22, offset: 2 }}>
-                            {<Image src={activeTemplate?.backViewImageURL || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
+                            {<Image src={activeTemplate?.backViewImageUrl || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
                         </Col>
 
                     </Row>
