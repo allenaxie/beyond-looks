@@ -413,7 +413,7 @@ const ProductsList = ({ templates }) => {
     }
 
     return (
-        <div>
+        <div className={classes.container}>
             <div className={classes.createTemplateBtn}>
                 <Button onClick={handleCreateTemplate}>
                     Create Template
@@ -451,7 +451,7 @@ const ProductsList = ({ templates }) => {
                                     <img
                                         width={272}
                                         alt="logo"
-                                        src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                                        src={item?.frontViewImageUrl}
                                     />
                                 </>
                             }
@@ -459,7 +459,7 @@ const ProductsList = ({ templates }) => {
                             onClick={() => handleItemClick(item)}
                         >
                             <List.Item.Meta
-                                avatar={<Avatar src={item.avatar} />}
+                                avatar={<Avatar src={item?.models[0]?.imageUrl} />}
                                 title={<a href={item.href}>{item.name}</a>}
                                 description={item.description}
                             />
