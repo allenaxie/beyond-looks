@@ -444,7 +444,7 @@ const ProductsList = ({ templates }) => {
                                 <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
                                 <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
                                 <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
-                                <Button onClick={(e) => showDeleteConfirm(e, item._id)} danger>Delete</Button>
+                                <Button onClick={(e) => showDeleteConfirm(e, item._id)} danger key='delete-button'>Delete</Button>
                             ]}
                             extra={
                                 <>
