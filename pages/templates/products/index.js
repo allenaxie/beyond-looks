@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import classes from './products.module.scss';
 import { List, Avatar, Space, Spin, Form, Input, InputNumber, Modal, Radio, Button, TextArea, Select } from 'antd';
-import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
+import { LikeOutlined, MessageOutlined, StarOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import {
     setActiveTemplate,
     selectTemplatesList,
@@ -54,26 +54,21 @@ const ProductsList = ({ templates }) => {
         </Space>
     );
 
-    const handleSubmitForm = (values) => {
-        values.detailLook = [values.detailLook1, values.detailLook2];
-        // values.detailLook.push(values.detailLook1,values.detailLook2);
-        console.log(values)
-
-
-    }
-
     const onFinishFailed = (errorInfo) => {
         console.log(errorInfo);
-    }
-
-    const handleFileInput = (e) => {
-        setSelectedModelImage(e.target.files[0]);
     }
 
     const handleFilesInput = (e, source) => {
         // console.log(e.target.files);
         // console.log('source:', source);
-        if (source === 'detail-image-1') {
+        if (source === 'model-image') {
+            selectedImages.modelImage = e.target.files[0];
+        } else if (source === 'frontView') {
+            selectedImages.frontViewImageUrl = e.target.files[0];
+        } else if (source === 'backView') {
+            selectedImages.backViewImageUrl = e.target.files[0];
+        }
+        else if (source === 'detail-image-1') {
             selectedImages.detailImage1 = e.target.files[0];
         } else if (source === 'detail-image-2') {
             selectedImages.detailImage2 = e.target.files[0];
@@ -119,14 +114,24 @@ const ProductsList = ({ templates }) => {
                         <Form.Item
                             label="Product Name:"
                             name='name'
-                            required
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please enter a product name.',
+                                },
+                            ]}
                         >
                             <Input placeholder='Enter product name...' />
                         </Form.Item>
-                        {/*<Form.Item
+                        <Form.Item
                             label="Product Description:"
                             name="description"
-                            required
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please enter a description of the product',
+                                },
+                            ]}
                         >
                             <TextArea rows={8} />
                         </Form.Item>
@@ -134,9 +139,15 @@ const ProductsList = ({ templates }) => {
                         <Form.Item
                             label={<span className={classes.formLabel}>Model profile picture</span>}
                             name={["models", "imageUrl"]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please upload an image.',
+                                },
+                            ]}
                         >
                             <div>
-                                <input type="file" onChange={handleFilesInput} />
+                                <input type="file" onChange={(evt) => handleFilesInput(evt, 'model-image')} />
                             </div>
                         </Form.Item>
                         <Form.Item
@@ -234,23 +245,41 @@ const ProductsList = ({ templates }) => {
                         <Form.Item
                             label={<span className={classes.formLabel}>Front view </span>}
                             name="frontViewImageUrl"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please upload an image.',
+                                },
+                            ]}
                         >
                             <div>
-                                <input type="file" onChange={handleFilesInput} />
+                                <input type="file" onChange={(evt) => handleFilesInput(evt, 'frontView')} />
                             </div>
                         </Form.Item>
                         <Form.Item
                             label={<span className={classes.formLabel}>Back view </span>}
                             name="backViewImageUrl"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please upload an image.',
+                                },
+                            ]}
                         >
                             <div>
-                                <input type="file" onChange={handleFilesInput} />
+                                <input type="file" onChange={(evt) => handleFilesInput(evt, 'backView')} />
                             </div>
-                        </Form.Item> */}
+                        </Form.Item>
                         {/* <h3>Detail Look</h3>
                         <Form.Item
                             label={<span className={classes.formLabel}>Image 1</span>}
                             name={[`detailLook1`, [`imageUrl`]]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please upload an image.',
+                                },
+                            ]}
                         >
                             <div>
                                 <input type="file" onChange={(evt) => handleFilesInput(evt, 'detail-image-1')} />
@@ -259,13 +288,25 @@ const ProductsList = ({ templates }) => {
                         <Form.Item
                             label={<span className={classes.formLabel}>Description 1</span>}
                             name={[`detailLook1`, [`description`]]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please upload an image.',
+                                },
+                            ]}
                         >
                             <Input
-                                placeholder="Enter product description..." />
-                        </Form.Item>
-                        <Form.Item
+                                placeholder="Enter image description..." />
+                        </Form.Item> */}
+                        {/* <Form.Item
                             label={<span className={classes.formLabel}>Image 2</span>}
                             name={[`detailLook2`, [`imageUrl`]]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please upload an image.'
+                                }
+                            ]}
                         >
                             <div>
                                 <input type="file" onChange={(evt) => handleFilesInput(evt, 'detail-image-2')} />
@@ -274,9 +315,15 @@ const ProductsList = ({ templates }) => {
                         <Form.Item
                             label={<span className={classes.formLabel}>Description 2</span>}
                             name={[`detailLook2`, [`description`]]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please enter description of image.',
+                                },
+                            ]}
                         >
                             <Input
-                                placeholder="Enter product description..." />
+                                placeholder="Enter image description" />
                         </Form.Item> */}
                     </Form>
                 </Spin >
@@ -292,22 +339,36 @@ const ProductsList = ({ templates }) => {
     // create template
     const onCreate = async (values) => {
 
-        // console.log('selected images:', selectedImages)
+        console.log('selected images:', selectedImages);
+        console.log('initial values:', values);
 
-        // const ReactS3Client = new S3(config);
+        const ReactS3Client = new S3(config);
 
-        // // upload files to S3
-        // setIsLoading(true);
-        // const [imageUrl1, imageUrl2] = await Promise.all([
-        //     ReactS3Client.uploadFile(selectedImages.detailImage1, selectedImages.detailImage1.name),
-        //     ReactS3Client.uploadFile(selectedImages.detailImage2, selectedImages.detailImage2.name),
-        // ])
+        // upload files to S3
+        setIsLoading(true);
+        const [
+            modelImage, frontViewImageUrl, backViewImageUrl, 
+            // imageUrl1, 
+            // imageUrl2
+        ] = await Promise.all([
+                ReactS3Client.uploadFile(selectedImages.modelImage, selectedImages.modelImage.name),
+                ReactS3Client.uploadFile(selectedImages.frontViewImageUrl, selectedImages.frontViewImageUrl.name),
+                ReactS3Client.uploadFile(selectedImages.backViewImageUrl, selectedImages.backViewImageUrl.name),
+                // ReactS3Client.uploadFile(selectedImages.detailImage1, selectedImages.detailImage1.name),
+                // ReactS3Client.uploadFile(selectedImages.detailImage2, selectedImages.detailImage2.name),
+            ])
 
-        // values.detailLook1.imageUrl = imageUrl1.location
+        values.models.imageUrl = modelImage.location;
+        values.frontViewImageUrl = frontViewImageUrl.location;
+        values.backViewImageUrl = backViewImageUrl.location;
+        // values.detailLook1.imageUrl = imageUrl1.location;
         // values.detailLook2.imageUrl = imageUrl2.location;
-        // values.detailLook = [values.detailLook1, values.detailLook2];
+        values.detailLook = [
+            values.detailLook1,
+            // values.detailLook2
+        ];
 
-        // console.log('selected images:', selectedImages);
+        console.log('selected images:', selectedImages);
         console.log('values:', values);
         // add to MongoDB
         const res = await axios.post(`/api/productTemplates`, values);
@@ -321,12 +382,34 @@ const ProductsList = ({ templates }) => {
     }
     console.log('updated templates list:', templatesList);
 
-    const handleDeleteItem = async (e, id) => {
+    const { confirm } = Modal;
+
+    const showDeleteConfirm = (e,id) => {
         e.stopPropagation();
+
+        confirm({
+          title: 'Are you sure delete this template?',
+          icon: <ExclamationCircleOutlined />,
+        //   content: 'Are you sure you want to delete',
+          okText: 'Yes',
+          okType: 'danger',
+          cancelText: 'No',
+          onOk() {
+            handleDeleteItem(id);
+          },
+          onCancel() {
+            console.log('Cancel');
+          },
+        });
+      };
+
+    const handleDeleteItem = async (id) => {
+        setIsLoading(true);
         console.log(id)
         const res = axios.delete(`/api/productTemplates/${id}`);
         const updatedTemplatesList = await loadTemplates();
         dispatch(setTemplatesList(updatedTemplatesList))
+        setIsLoading(false);
     }
 
     return (
@@ -361,7 +444,7 @@ const ProductsList = ({ templates }) => {
                                 <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
                                 <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
                                 <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
-                                <Button onClick={(e) => handleDeleteItem(e, item._id)}>Delete</Button>
+                                <Button onClick={(e) => showDeleteConfirm(e, item._id)} danger>Delete</Button>
                             ]}
                             extra={
                                 <>

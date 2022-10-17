@@ -1,3 +1,18 @@
 .main {
-    text-align: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(19, 19, 19);
+}
+
+.titleContainer {
+    & h1 {
+        font-size: 4.5rem;
+        background: -webkit-linear-gradient(rgb(255, 255, 255), rgb(149, 149, 149));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 12rem;
+        font-family: 'Saira Condensed', sans-serif;
+    }
 }

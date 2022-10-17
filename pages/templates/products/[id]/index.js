@@ -63,12 +63,8 @@ const ProductDetails = ({ template }) => {
                         </div>
                     </div>
                     <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
-                    {activeTemplate?.models?.length > 0 && (
-                        <>
-                            <ModelsInfo activeTemplate={activeTemplate} handleEditClick={handleEditClick} />
-                            <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
-                        </>
-                    )}
+                    <ModelsInfo activeTemplate={activeTemplate} handleEditClick={handleEditClick} />
+                    <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
                     <SizeInfo />
                     <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
                     <div>
@@ -87,7 +83,7 @@ const ProductDetails = ({ template }) => {
                     <DetailLook handleEditClick={handleEditClick} />
                     <Divider style={{ marginTop: '2rem', marginBottom: '2rem' }} />
                     {/* image gallery */}
-                    <Row gutter={[32,32]} onClick={() => handleEditClick('images-gallery')}>
+                    {/* <Row gutter={[32, 32]} onClick={() => handleEditClick('images-gallery')}>
                         <Col xs={{ span: 22, offset: 2 }}>
                             {<Image src={activeTemplate?.backViewImageUrl || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
                         </Col>
@@ -100,8 +96,7 @@ const ProductDetails = ({ template }) => {
                         <Col xs={{ span: 22, offset: 2 }}>
                             {<Image src={activeTemplate?.backViewImageUrl || 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com/photos/pyper-transparent.png'} width={'100%'} height={'100%'} />}
                         </Col>
-
-                    </Row>
+                    </Row> */}
                 </div>
                 <div className={classes.buttonContainer}>
                     <Button onClick={exportJPEG}>Export as JPEG</Button>

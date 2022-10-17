@@ -125,7 +125,7 @@ const SizeInfo = () => {
                 {
                     title: (
                         <Popover content={popoverContent}>
-                            尺码
+                            <span className={classes.tableHeaders}>尺码</span>
                         </Popover>
                     ),
                     dataIndex: 'size',
@@ -133,12 +133,12 @@ const SizeInfo = () => {
                     editable: true,
                 },
                 {
-                    title: '胸围',
+                    title: <span className={classes.tableHeaders}>胸围</span>,
                     dataIndex: 'chest',
                     editable: true,
                 },
                 {
-                    title: '腰围',
+                    title: <span className={classes.tableHeaders}>腰围</span>,
                     dataIndex: 'waist',
                     editable: true,
                 },
@@ -157,7 +157,7 @@ const SizeInfo = () => {
             {
                 title: (
                     <Popover content={popoverContent}>
-                        尺码
+                        <span className={classes.tableHeaders}>尺码</span>
                     </Popover>
                 ),
                 dataIndex: 'size',
@@ -165,16 +165,15 @@ const SizeInfo = () => {
                 editable: true,
             },
             {
-                title: '胸围',
+                title: <span className={classes.tableHeaders}>胸围</span>,
                 dataIndex: 'chest',
                 editable: true,
             },
             {
-                title: '腰围',
+                title: <span className={classes.tableHeaders}>腰围</span>,
                 dataIndex: 'waist',
                 editable: true,
             },
-
         ]
     }
 

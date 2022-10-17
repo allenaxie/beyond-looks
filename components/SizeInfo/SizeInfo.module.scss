@@ -23,12 +23,19 @@
 
     & th {
         font-size: .6rem;
+        width: 100%;        
     }
 
     & td {
         font-size: .6rem;
         white-space: nowrap;
     }
+}
+
+.tableHeaders {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .productName {
