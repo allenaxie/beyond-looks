@@ -1,3 +1,11 @@
 .productItem {
     cursor: pointer;
 }
+
+.createTemplateBtn {
+    width: 100%;
+    margin: 2rem;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 4rem;
+}

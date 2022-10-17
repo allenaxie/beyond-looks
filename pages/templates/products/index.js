@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import classes from './products.module.scss';
-import { List, Avatar, Space, Spin } from 'antd';
+import { List, Avatar, Space, Spin, Form, Input, InputNumber, Modal, Radio, Button, TextArea, Select } from 'antd';
 import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
 import {
     setActiveTemplate,
@@ -11,11 +11,27 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import S3 from 'react-aws-s3';
+import { loadTemplates } from '../../../lib/templates';
 
 const ProductsList = ({ templates }) => {
     const dispatch = useDispatch();
     const router = useRouter();
+    const { TextArea } = Input;
+    let selectedImages = {};
+
     const [isLoading, setIsLoading] = useState(false);
+    const [openTemplateModal, setOpenTemplateModal] = useState(false);
+
+    const config = {
+        bucketName: 'beyond-looks-s3',
+        dirName: 'photos', /* optional */
+        region: 'us-west-1',
+        accessKeyId: process.env.NEXT_PUBLIC_AWS_KEY,
+        secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET,
+        s3Url: 'https://beyond-looks-s3.s3.us-west-1.amazonaws.com', /* optional */
+
+    }
 
     useEffect(() => {
         // get templates
@@ -38,8 +54,295 @@ const ProductsList = ({ templates }) => {
         </Space>
     );
 
+    const handleSubmitForm = (values) => {
+        values.detailLook = [values.detailLook1, values.detailLook2];
+        // values.detailLook.push(values.detailLook1,values.detailLook2);
+        console.log(values)
+
+
+    }
+
+    const onFinishFailed = (errorInfo) => {
+        console.log(errorInfo);
+    }
+
+    const handleFileInput = (e) => {
+        setSelectedModelImage(e.target.files[0]);
+    }
+
+    const handleFilesInput = (e, source) => {
+        // console.log(e.target.files);
+        // console.log('source:', source);
+        if (source === 'detail-image-1') {
+            selectedImages.detailImage1 = e.target.files[0];
+        } else if (source === 'detail-image-2') {
+            selectedImages.detailImage2 = e.target.files[0];
+        }
+        // console.log(selectedImages);
+    }
+
+    const TemplateCreateForm = ({ open, onCreate, onCancel }) => {
+        const [form] = Form.useForm();
+        return (
+            <Modal
+                open={open}
+                title="Create a new Template"
+                okText="Save"
+                onCancel={onCancel}
+                onOk={() => {
+                    form
+                        .validateFields()
+                        .then((values) => {
+                            form.resetFields();
+                            onCreate(values);
+                        })
+                        .catch((info) => {
+                            console.log('Validate Failed:', info);
+                        });
+                }}
+            >
+                <Spin spinning={isLoading}>
+                    <Form
+                        form={form}
+                        className={classes.container}
+                        name='productItem-form'
+                        // onFinish={handleSubmitForm}
+                        onFinishFailed={onFinishFailed}
+                        labelCol={{
+                            span: 10,
+                        }}
+                        wrapperCol={{
+                            span: 14,
+                        }}
+                        autoComplete='off'
+                    >
+                        <Form.Item
+                            label="Product Name:"
+                            name='name'
+                            required
+                        >
+                            <Input placeholder='Enter product name...' />
+                        </Form.Item>
+                        {/*<Form.Item
+                            label="Product Description:"
+                            name="description"
+                            required
+                        >
+                            <TextArea rows={8} />
+                        </Form.Item>
+                        <h3>Model</h3>
+                        <Form.Item
+                            label={<span className={classes.formLabel}>Model profile picture</span>}
+                            name={["models", "imageUrl"]}
+                        >
+                            <div>
+                                <input type="file" onChange={handleFilesInput} />
+                            </div>
+                        </Form.Item>
+                        <Form.Item
+                            label={`Model name`}
+                            name={["models", 'name']}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input name of model.',
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
+                        <Form.Item
+                            label={`Model height`}
+                            name={["models", 'height']}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input height of model.',
+                                },
+                            ]}
+                        >
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item
+                            label={`Model weight`}
+                            name={["models", 'weight']}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input weight of model.',
+                                },
+                            ]}
+                        >
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item
+                            label={`Bust measurement`}
+                            name={["models", 'bust']}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input bust measurement of model.',
+                                },
+                            ]}
+                        >
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item
+                            label={`Waist measurement`}
+                            name={["models", 'waist']}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input waist measurement of model.',
+                                },
+                            ]}
+                        >
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item
+                            label={`Hips measurement`}
+                            name={["models", 'hips']}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input hip measurement of model.',
+                                },
+                            ]}
+                        >
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item
+                            label={`Model size`}
+                            name={["models", 'size']}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please select product size of model.',
+                                },
+                            ]}
+                        >
+                            <Select
+                                style={{
+                                    width: 120,
+                                }}
+                            >
+                                <Select.Option value="S">S</Select.Option>
+                                <Select.Option value="M">M</Select.Option>
+                                <Select.Option value="L">L</Select.Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item
+                            label={<span className={classes.formLabel}>Front view </span>}
+                            name="frontViewImageUrl"
+                        >
+                            <div>
+                                <input type="file" onChange={handleFilesInput} />
+                            </div>
+                        </Form.Item>
+                        <Form.Item
+                            label={<span className={classes.formLabel}>Back view </span>}
+                            name="backViewImageUrl"
+                        >
+                            <div>
+                                <input type="file" onChange={handleFilesInput} />
+                            </div>
+                        </Form.Item> */}
+                        {/* <h3>Detail Look</h3>
+                        <Form.Item
+                            label={<span className={classes.formLabel}>Image 1</span>}
+                            name={[`detailLook1`, [`imageUrl`]]}
+                        >
+                            <div>
+                                <input type="file" onChange={(evt) => handleFilesInput(evt, 'detail-image-1')} />
+                            </div>
+                        </Form.Item>
+                        <Form.Item
+                            label={<span className={classes.formLabel}>Description 1</span>}
+                            name={[`detailLook1`, [`description`]]}
+                        >
+                            <Input
+                                placeholder="Enter product description..." />
+                        </Form.Item>
+                        <Form.Item
+                            label={<span className={classes.formLabel}>Image 2</span>}
+                            name={[`detailLook2`, [`imageUrl`]]}
+                        >
+                            <div>
+                                <input type="file" onChange={(evt) => handleFilesInput(evt, 'detail-image-2')} />
+                            </div>
+                        </Form.Item>
+                        <Form.Item
+                            label={<span className={classes.formLabel}>Description 2</span>}
+                            name={[`detailLook2`, [`description`]]}
+                        >
+                            <Input
+                                placeholder="Enter product description..." />
+                        </Form.Item> */}
+                    </Form>
+                </Spin >
+            </Modal >
+        );
+    };
+
+    // open modal
+    const handleCreateTemplate = () => {
+        setOpenTemplateModal(true);
+    }
+
+    // create template
+    const onCreate = async (values) => {
+
+        // console.log('selected images:', selectedImages)
+
+        // const ReactS3Client = new S3(config);
+
+        // // upload files to S3
+        // setIsLoading(true);
+        // const [imageUrl1, imageUrl2] = await Promise.all([
+        //     ReactS3Client.uploadFile(selectedImages.detailImage1, selectedImages.detailImage1.name),
+        //     ReactS3Client.uploadFile(selectedImages.detailImage2, selectedImages.detailImage2.name),
+        // ])
+
+        // values.detailLook1.imageUrl = imageUrl1.location
+        // values.detailLook2.imageUrl = imageUrl2.location;
+        // values.detailLook = [values.detailLook1, values.detailLook2];
+
+        // console.log('selected images:', selectedImages);
+        console.log('values:', values);
+        // add to MongoDB
+        const res = await axios.post(`/api/productTemplates`, values);
+        const newTemplate = res.data.data;
+
+        console.log('templatesList:', templatesList)
+        // update list
+        dispatch(setTemplatesList([...templatesList, newTemplate]));
+        setIsLoading(false);
+        setOpenTemplateModal(false);
+    }
+    console.log('updated templates list:', templatesList);
+
+    const handleDeleteItem = async (e, id) => {
+        e.stopPropagation();
+        console.log(id)
+        const res = axios.delete(`/api/productTemplates/${id}`);
+        const updatedTemplatesList = await loadTemplates();
+        dispatch(setTemplatesList(updatedTemplatesList))
+    }
+
     return (
         <div>
+            <div className={classes.createTemplateBtn}>
+                <Button onClick={handleCreateTemplate}>
+                    Create Template
+                </Button>
+                <TemplateCreateForm
+                    open={openTemplateModal}
+                    onCreate={onCreate}
+                    onCancel={() => {
+                        setOpenTemplateModal(false);
+                    }}
+                />
+            </div>
             <Spin spinning={isLoading}>
                 <List
                     itemLayout='vertical'
@@ -58,13 +361,16 @@ const ProductsList = ({ templates }) => {
                                 <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
                                 <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
                                 <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                                <Button onClick={(e) => handleDeleteItem(e, item._id)}>Delete</Button>
                             ]}
                             extra={
-                                <img
-                                    width={272}
-                                    alt="logo"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                                />
+                                <>
+                                    <img
+                                        width={272}
+                                        alt="logo"
+                                        src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                                    />
+                                </>
                             }
                             className={classes.productItem}
                             onClick={() => handleItemClick(item)}
@@ -86,14 +392,12 @@ const ProductsList = ({ templates }) => {
 export default ProductsList;
 
 export async function getStaticProps(context) {
-    let templates = [];
+    // let templates = [];
 
-    try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/productTemplates`);
-        templates = res.data.data;
-    } catch (err) {
-        console.log(err);
-    }
+    // const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/productTemplates`);
+    // templates = res.data.data;
+    const templates = await loadTemplates();
+
 
     return {
         props: {

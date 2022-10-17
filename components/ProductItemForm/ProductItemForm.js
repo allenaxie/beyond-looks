@@ -347,7 +347,7 @@ const ProductItemForm = ({ activeTemplate }) => {
                     (
                         <>
                             <Form.Item
-                                label={<span className={classes.formLabel}>Front view: </span>}
+                                label={<span className={classes.formLabel}>Front view </span>}
                                 name="frontViewImageUrl"
                             >
                                 <div>
@@ -355,7 +355,7 @@ const ProductItemForm = ({ activeTemplate }) => {
                                 </div>
                             </Form.Item>
                             <Form.Item
-                                label={<span className={classes.formLabel}>Back view: </span>}
+                                label={<span className={classes.formLabel}>Back view </span>}
                                 name="backViewImageUrl"
                             >
                                 <div>

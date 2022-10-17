@@ -40,7 +40,7 @@ export default async function handler(req, res) {
             // find topic
             const deletedProductTemplate = await ProductTemplate.findOneAndDelete({ _id: id });
             // if no topic
-            if (!deletedTopic) {
+            if (!deletedProductTemplate) {
                 res.status(400).json({ message: 'No product template found.' })
             }
             // if successful
